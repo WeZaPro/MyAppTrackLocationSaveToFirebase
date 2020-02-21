@@ -42,9 +42,9 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class MapActivity extends AppCompatActivity implements
-        GoogleMap.OnInfoWindowClickListener,
-        OnMapReadyCallback {
+public class MapActivity extends AppCompatActivity implements // Implement Method
+        GoogleMap.OnInfoWindowClickListener,// Click info window
+        OnMapReadyCallback { // map
 
     double LO;
     double LA;
@@ -65,6 +65,7 @@ public class MapActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        // get value from MainActivity ไปเก็บไว้ที่ตัวแปล LO,LA
         Bundle bundle = getIntent().getExtras();
         LO = bundle.getDouble("LON");
         LA = bundle.getDouble("LAT");
@@ -74,7 +75,6 @@ public class MapActivity extends AppCompatActivity implements
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(MapActivity.this);
 
-
     }
 
     @Override
@@ -82,11 +82,13 @@ public class MapActivity extends AppCompatActivity implements
         mMap = googleMap;
         addInfoWindowToMap();
 
+        //Dexter คือ การใช้ Libraly Dexter เพื่อขอใช้  Permission
         Dexter.withActivity(this)
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
+                        // permision Ok
                         updateLocation();
                     }
                     @Override
@@ -102,6 +104,7 @@ public class MapActivity extends AppCompatActivity implements
 
     }
 
+    //***** เดีี๋ยวกลับมาทำความเข้าใจ
     private void updateLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -117,6 +120,7 @@ public class MapActivity extends AppCompatActivity implements
                 Looper.myLooper());
     }
 
+    //***** เดีี๋ยวกลับมาทำความเข้าใจ
     private LocationCallback locationCallbackObject() {
         LocationCallback locationCallback = new LocationCallback() {
             @Override
@@ -134,6 +138,7 @@ public class MapActivity extends AppCompatActivity implements
         return locationCallback;
     }
 
+    //***** เดีี๋ยวกลับมาทำความเข้าใจ
     private void createLocationRequest() {
         // Create the location request to start receiving updates
         locationRequest = new LocationRequest();
@@ -142,17 +147,15 @@ public class MapActivity extends AppCompatActivity implements
         locationRequest.setFastestInterval(FASTEST_INTERVAL);
     }
 
+    //***** เดีี๋ยวกลับมาทำความเข้าใจ
     private LatLng constructLatLngObject(LocationResult locationResult) {
-        /*Location location = locationResult.getLastLocation();
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        return new LatLng(latitude, longitude);*/
 
         double latitude = LA;
         double longitude = LO;
         return new LatLng(longitude, latitude); //******************
     }
 
+    //***** เดีี๋ยวกลับมาทำความเข้าใจ
     private void updateMap(final LatLng location) {
         mMap.clear();
         Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
@@ -188,8 +191,6 @@ public class MapActivity extends AppCompatActivity implements
         toast.show();
     }
 
-
-
     private void addInfoWindowToMap() {
 
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -223,7 +224,6 @@ public class MapActivity extends AppCompatActivity implements
                 return info;
             }
         });
-
     }
 
     @Override
@@ -237,7 +237,4 @@ public class MapActivity extends AppCompatActivity implements
         startActivity(i);
 
     }
-
-
-
 }
